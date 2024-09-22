@@ -63,7 +63,6 @@ fig.add_trace(go.Scatter(
     showlegend=False 
 ))
 
-
 # Loop through selected cities, add traces if selected
 for city_name, (show_city, color) in city_options.items():
     if show_city:
@@ -104,4 +103,4 @@ fig.update_layout(
 )
 
 st.plotly_chart(fig)
-st.write("This graph shows the yearly historical anomalies as well as the projections until 2100 if the 1975-2023 trend continues.")
+st.write("This graph shows the yearly historical temperature anomalies as well as the projections until 2100 if the 1975-2023 trend continues.")

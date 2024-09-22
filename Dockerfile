@@ -10,6 +10,4 @@ COPY . .
 
 EXPOSE 8501
 
-ENV STREAMLIT_PORT=8501
-
 CMD ["streamlit", "run", "Welcome.py", "--server.port=8501", "--server.address=0.0.0.0"]
