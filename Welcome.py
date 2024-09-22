@@ -5,7 +5,7 @@ st.set_page_config(
     page_icon="🌍",
 )
 
-st.write("# Welcome to our our climate change visualization app! 🌍📈")
+st.write("# Welcome to our climate change visualization app! 🌍📈")
 
 st.sidebar.success("Select the data to be displayed above.")
 

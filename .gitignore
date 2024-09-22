@@ -154,4 +154,6 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+# Heavy local files
 data/gistemp*
+explo.ipynb

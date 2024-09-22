@@ -1,17 +1,14 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
 import plotly.graph_objects as go
 from sklearn.linear_model import Ridge
+import numpy as np
 
-# Initialize Ridge model
 ridge = Ridge()
 
-# Page configuration
 st.set_page_config(page_title="Anomalies in your City", page_icon="🏙️")
 st.title("Visualize temperature anomalies in your city")
 
-# City selection checkboxes
 st.write("Select the cities you want to compare:")
 col1, col2, col3, col4, col5 = st.columns(5)
 
@@ -26,17 +23,14 @@ with col4:
 with col5:
     show_london = st.checkbox("London")
 
-# Projection toggle
 st.write("Show projections until 2100:")
 show_projections = st.checkbox("**Show projections**")
 
-# Load data functions
 @st.cache_data
 def load_city_data(city):
-    path = f'C:/Users/User/Mon Drive/DSB/2A HEC/Tooling for DS/climate-change-app/{city.lower()}_temperature_anomalies.csv'
+    path = f'data/{city.lower()}_temperature_anomalies.csv'
     return pd.read_csv(path)
 
-# Prediction function for projections
 @st.cache_data
 def predict_anomalies(city_data, city_name):
     if show_projections:
@@ -47,10 +41,8 @@ def predict_anomalies(city_data, city_name):
         return df_pred
     return None
 
-# Create an empty Plotly figure
 fig = go.Figure()
 
-# List of cities and their respective settings
 city_options = {
     "Paris": (show_paris, "blue"),
     "New York": (show_new_york, "red"),
@@ -59,7 +51,20 @@ city_options = {
     "London": (show_london, "purple"),
 }
 
-# Loop through selected cities, add traces to the Plotly figure
+if show_projections:
+    years = np.arange(1880, 2101)
+else:
+    years = np.arange(1880, 2024)
+fig.add_trace(go.Scatter(
+    x=years, 
+    y=0 * years, 
+    mode='lines', 
+    line=dict(color='grey', width=1),
+    showlegend=False 
+))
+
+
+# Loop through selected cities, add traces if selected
 for city_name, (show_city, color) in city_options.items():
     if show_city:
         city_data = load_city_data(city_name.lower().replace(" ", ""))
@@ -90,7 +95,7 @@ for city_name, (show_city, color) in city_options.items():
                     hovertemplate='%{x}: %{y:.2f}°C<extra></extra>'
                 ))
 
-# Finalize the layout of the figure
+# Finalize layout 
 fig.update_layout(
     title="City Temperature Anomalies per Year vs 1950-1980 average",
     xaxis_title="Year",
@@ -98,7 +103,5 @@ fig.update_layout(
     yaxis=dict(range=[-2, 6] if show_projections else [-2, 4]),
 )
 
-# Display the interactive Plotly figure in Streamlit
 st.plotly_chart(fig)
-
 st.write("This graph shows the yearly historical anomalies as well as the projections until 2100 if the 1975-2023 trend continues.")

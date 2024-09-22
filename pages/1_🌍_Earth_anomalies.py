@@ -9,7 +9,7 @@ st.title("Visualize Climate Change Data")
 # Cache the data loading step
 @st.cache_data
 def load_data():
-    return pd.read_csv('C:/Users/User/Mon Drive/DSB/2A HEC/Tooling for DS/climate-change-app/word_temperature_anomalies.csv')
+    return pd.read_csv('data/world_temperature_anomalies.csv')
 
 st.cache_data()
 def filter_data(data, year):
